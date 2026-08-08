@@ -58,6 +58,8 @@
       <div class="letter">
         <p class="letter__salutation">Dear <span id="guestName2">Tamu Undangan</span>,</p>
         <p class="letter__intro" id="hostGreeting">It is a pleasure to invite you to</p>
+        <div class="letter__honoree" id="honoree">Maura Nilambari</div>
+        <p class="letter__intro" id="hostGreetingAfter">…</p>
         <div class="letter__rule" aria-hidden="true"></div>
         <div class="letter__details-title">Stream Details</div>
         <div class="letter__meta">
@@ -97,7 +99,6 @@
       <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
       <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
     </button>
-    <button class="theme-btn" id="muteBtn" type="button" aria-label="Mute suara" title="Mute suara">🔊</button>
   </div>
 </div>
 
@@ -150,6 +151,10 @@
 
   document.getElementById('categoryLabel').textContent = EVENT.category || 'Undangan';
   document.getElementById('hostGreeting').textContent = EVENT.hostGreeting;
+  const honoreeEl = document.getElementById('honoree');
+  if (honoreeEl) honoreeEl.textContent = EVENT.honoreeName || '';
+  const hostGreetingAfterEl = document.getElementById('hostGreetingAfter');
+  if (hostGreetingAfterEl) hostGreetingAfterEl.textContent = EVENT.hostGreetingAfter || '';
   const eventDateEl = document.getElementById('eventDate');
   const eventTimeEl = document.getElementById('eventTime');
   if (eventDateEl) eventDateEl.textContent = EVENT.date;
@@ -301,20 +306,9 @@
 })();
 </script>
 <script type="module">
-// ---- Suara interaksi (cuelume) ----
-import { bind, play, setEnabled } from "https://esm.sh/cuelume";
-window.cuelume = { play, setEnabled };
+// ---- Suara interaksi (cuelume) — selalu aktif ----
+import { bind, play } from "https://esm.sh/cuelume";
+window.cuelume = { play };
 bind();
-
-// Tombol mute
-const muteBtn = document.getElementById('muteBtn');
-if (muteBtn){
-  let muted = false;
-  muteBtn.addEventListener('click', ()=>{
-    muted = !muted;
-    setEnabled(!muted);
-    muteBtn.textContent = muted ? '🔇' : '🔊';
-  });
-}
 </script></body>
 </html>
