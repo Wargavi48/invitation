@@ -11,6 +11,7 @@
 </head>
 <body>
 
+<div class="stage">
 <div class="frame" id="frame">
   <div class="header">
     <div class="brand-mark brand-mark--host" id="hostMark">
@@ -86,7 +87,14 @@
   </div>
 </div>
 
+  <button class="save-btn" id="saveBtn" type="button">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Simpan sebagai PNG
+  </button>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="config.js"></script>
 <script>
 (function(){
@@ -200,6 +208,39 @@
   });
 
   render();
+})();
+</script>
+
+<script>
+// ---- Simpan undangan sebagai gambar PNG ----
+(function(){
+  const saveBtn = document.getElementById('saveBtn');
+  if (!saveBtn || !window.html2canvas) return;
+
+  saveBtn.addEventListener('click', async ()=>{
+    const frameEl = document.getElementById('frame');
+    const navEl = document.querySelector('.nav');
+    saveBtn.disabled = true;
+    if (navEl) navEl.style.display = 'none'; // sembunyikan tombol nav biar hasilnya rapi
+    try {
+      const canvas = await html2canvas(frameEl, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
+        logging: false
+      });
+      const a = document.createElement('a');
+      a.download = 'undangan.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    } catch (err) {
+      console.error(err);
+      alert('Gagal menyimpan gambar: ' + err.message);
+    } finally {
+      if (navEl) navEl.style.display = '';
+      saveBtn.disabled = false;
+    }
+  });
 })();
 </script>
 </body>

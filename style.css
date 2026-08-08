@@ -68,7 +68,7 @@ body{
   height:min(92vh, 780px);
   border-radius: var(--radius-card);
   overflow:hidden;
-  background: url("asset/water-wave-with-drops_1160-169.webp") center/cover no-repeat;
+  background: url("asset/inv.webp") center/cover no-repeat;
   border:1px solid var(--border);
   box-shadow: var(--shadow-md);
   display:flex;
@@ -342,3 +342,31 @@ body{
     transition-duration:0.01ms !important;
   }
 }
+
+/* ---------- Stage + tombol Simpan PNG ---------- */
+.stage{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  padding: 20px 0;
+}
+.save-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 18px;
+  border-radius: var(--radius-pill);
+  border:1px solid rgba(12,111,158,0.25);
+  background: var(--white);
+  color: var(--brand);
+  font:inherit;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+.save-btn:hover{ background: var(--brand-soft); transform: translateY(-1px); }
+.save-btn:active{ transform: translateY(0); }
+.save-btn:disabled{ opacity:0.6; cursor:default; }
