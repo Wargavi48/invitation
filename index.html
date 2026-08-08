@@ -237,8 +237,23 @@
   saveBtn.addEventListener('click', async ()=>{
     const frameEl = document.getElementById('frame');
     const navEl = document.querySelector('.nav');
+    const logos = Array.from(document.querySelectorAll('.brand-mark__logo'));
     saveBtn.disabled = true;
     if (navEl) navEl.style.display = 'none'; // sembunyikan tombol nav biar hasilnya rapi
+
+    // html2canvas tidak mendukung object-fit:contain → samakan ukuran kotak img dengan rasio
+    // asli gambar, supaya logo (yang lebar) tidak tampak "melar" di hasil PNG.
+    logos.forEach(img=>{
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const r = img.getBoundingClientRect();
+      const ratio = img.naturalWidth / img.naturalHeight;
+      let w = r.height * ratio;
+      let h = r.height;
+      if (w > r.width){ w = r.width; h = w / ratio; }
+      img.style.width = Math.round(w) + 'px';
+      img.style.height = Math.round(h) + 'px';
+    });
+
     try {
       const canvas = await html2canvas(frameEl, {
         scale: 2,
@@ -254,6 +269,10 @@
       console.error(err);
       alert('Gagal menyimpan gambar: ' + err.message);
     } finally {
+      logos.forEach(img=>{
+        img.style.width = '';
+        img.style.height = '';
+      });
       if (navEl) navEl.style.display = '';
       saveBtn.disabled = false;
     }
