@@ -4,21 +4,14 @@
 
 // 1) KREDENSIAL SUPABASE
 //    Ambil dari: Supabase Dashboard > Project Settings > API
-const SUPABASE_URL = "https://brahomjawmfckgtzgaea.supabase.co";       // contoh: https://xxxxxxxx.supabase.co
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJyYWhvbWphd21mY2tndHpnYWVhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwODU2NDYsImV4cCI6MjEwMTY2MTY0Nn0.HJaixEsw9AI1mulh3YAHT4oC6C7PieXIWJcj-G-0hJk";
+const SUPABASE_URL = "__SUPABASE_URL__";           // diisi otomatis oleh GitHub Actions (secret SUPABASE_URL)
+const SUPABASE_ANON_KEY = "__SUPABASE_ANON_KEY__"; // diisi otomatis oleh GitHub Actions (secret SUPABASE_ANON_KEY)
 
 // 1b) URL UNDANGAN DI GITHUB PAGES
 //    Ganti USERNAME-GITHUB dengan username GitHub kamu.
 //    Halaman undangan akan tampil di: https://USERNAME-GITHUB.github.io/invitation/
 const GITHUB_USERNAME = "wargavi48"; // TODO: ganti dengan username GitHub kamu
 const INVITATION_URL = `https://${GITHUB_USERNAME}.github.io/invitation/`;
-
-// 1c) PASSWORD ADMIN (dipakai halaman admin di repo admin-inv)
-//    Isi dengan hash SHA-256 (hex) dari password admin.
-//    Default di bawah = password "admin123" → WAJIB GANTI sebelum dipakai!
-//    Cara bikin hash baru (PowerShell):
-//      [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes("PASSWORD-ANDA"))).ToLower()
-const ADMIN_PASSWORD_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9";
 
 // 2) ISI UNDANGAN — placeholder, silakan edit sesuai acara kamu
 const EVENT = {
@@ -41,4 +34,4 @@ const EVENT = {
 };
 
 // Jangan diubah — dipakai oleh index.html & admin.html
-window.__INVITATION_CONFIG__ = { SUPABASE_URL, SUPABASE_ANON_KEY, INVITATION_URL, ADMIN_PASSWORD_HASH, EVENT };
+window.__INVITATION_CONFIG__ = { SUPABASE_URL, SUPABASE_ANON_KEY, INVITATION_URL, EVENT };
