@@ -6,7 +6,7 @@
 <title>Undangan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Story+Script&display=swap" rel="stylesheet">
 <meta name="color-scheme" content="light dark">
 <script>
 // Set tema sebelum CSS dipakai (hindari flash): pakai preferensi sistem atau pilihan tersimpan
@@ -64,12 +64,8 @@
         <div class="letter__details-title">Stream Details</div>
         <div class="letter__meta">
           <div class="letter__row">
-            <span class="letter__label">Date</span>
-            <span class="letter__value" id="eventDate">-</span>
-          </div>
-          <div class="letter__row">
-            <span class="letter__label">Time</span>
-            <span class="letter__value" id="eventTime">-</span>
+            <span class="letter__label">Date &amp; Time</span>
+            <span class="letter__value" id="eventDateTime">-</span>
           </div>
           <div class="letter__row">
             <span class="letter__label">Link</span>
@@ -155,10 +151,8 @@
   if (honoreeEl) honoreeEl.textContent = EVENT.honoreeName || '';
   const hostGreetingAfterEl = document.getElementById('hostGreetingAfter');
   if (hostGreetingAfterEl) hostGreetingAfterEl.textContent = EVENT.hostGreetingAfter || '';
-  const eventDateEl = document.getElementById('eventDate');
-  const eventTimeEl = document.getElementById('eventTime');
-  if (eventDateEl) eventDateEl.textContent = EVENT.date;
-  if (eventTimeEl) eventTimeEl.textContent = EVENT.time;
+  const eventDateTimeEl = document.getElementById('eventDateTime');
+  if (eventDateTimeEl) eventDateTimeEl.textContent = (EVENT.date + " • " + EVENT.time).trim();
   const placeEl = document.getElementById('eventPlace');
   placeEl.textContent = EVENT.place;
   placeEl.href = EVENT.placeMapUrl || '#';
