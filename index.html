@@ -40,11 +40,11 @@
       <div class="cover-scrim" aria-hidden="true"></div>
       <div class="cover-body">
         <span class="pill pill--category" id="categoryLabel">Undangan</span>
-        <div class="eyebrow">Dear,</div>
+        <div class="eyebrow" data-i18n="eyebrow">Dear,</div>
         <div class="guest-name" id="guestName">Tamu Undangan</div>
       </div>
-      <button class="button button--primary" id="openBtn" data-cuelume-press data-cuelume-release>
-        <span>Buka Undangan</span>
+      <button class="button button--primary" id="openBtn" data-cuelume-hover="pulse" data-cuelume-press data-cuelume-release>
+        <span data-i18n="openBtn">Buka Undangan</span>
         <span class="button__divider"></span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -56,19 +56,19 @@
         <img class="letter-brand__img" id="letterBrandImg" alt="KodoknyaMaura" />
       </div>
       <div class="letter">
-        <p class="letter__salutation">Dear <span id="guestName2">Tamu Undangan</span>,</p>
+        <p class="letter__salutation"><span data-i18n="dear">Dear</span> <span id="guestName2">Tamu Undangan</span>,</p>
         <p class="letter__intro" id="hostGreeting">It is a pleasure to invite you to</p>
         <div class="letter__honoree" id="honoree">Maura Nilambari</div>
         <p class="letter__intro" id="hostGreetingAfter">…</p>
         <div class="letter__rule" aria-hidden="true"></div>
-        <div class="letter__details-title">Stream Details</div>
+        <div class="letter__details-title" data-i18n="detailsTitle">Stream Details</div>
         <div class="letter__meta">
           <div class="letter__row">
-            <span class="letter__label">Date &amp; Time</span>
+            <span class="letter__label" data-i18n="labelDateTime">Date &amp; Time</span>
             <span class="letter__value" id="eventDateTime">-</span>
           </div>
           <div class="letter__row">
-            <span class="letter__label">Link</span>
+            <span class="letter__label" data-i18n="labelLink">Link</span>
             <span class="letter__value"><a id="eventPlace" href="#" target="_blank" rel="noopener">-</a></span>
           </div>
         </div>
@@ -87,11 +87,12 @@
 </div>
 
   <div class="stage-tools">
-    <button class="save-btn" id="saveBtn" type="button" data-cuelume-press data-cuelume-release>
+    <button class="save-btn" id="saveBtn" type="button" data-cuelume-hover="scan" data-cuelume-press data-cuelume-release>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Simpan sebagai PNG
+      <span data-i18n="saveBtn">Simpan sebagai PNG</span>
     </button>
-    <button class="theme-btn" id="themeBtn" type="button" aria-label="Ganti tema terang/gelap" title="Ganti tema">
+    <button class="theme-btn lang-btn" id="langBtn" type="button" data-cuelume-hover="tick" data-cuelume-toggle title="Ganti bahasa">🌐 <span id="langCode">ID</span></button>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Ganti tema terang/gelap" title="Ganti tema" data-i18n-title="themeTitle" data-cuelume-hover="tick" data-cuelume-toggle>
       <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
       <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
     </button>
@@ -297,6 +298,100 @@
     root.setAttribute('data-theme', next);
     try{ localStorage.setItem('theme', next); }catch(e){}
   });
+})();
+</script>
+<script>
+// ---- Lokalisasi EN/ID ----
+(function(){
+  const I18N = {
+    en: {
+      openBtn: "Open Invitation",
+      saveBtn: "Save as PNG",
+      themeTitle: "Toggle light/dark theme",
+      langTitle: "Switch to Indonesian",
+      eyebrow: "Dear,",
+      dear: "Dear",
+      detailsTitle: "Stream Details",
+      labelDateTime: "Date & Time",
+      labelLink: "Link",
+      category: "Graduation",
+      hostGreeting: "You are warmly invited to attend the graduation of",
+      hostGreetingAfter: "As a valued part of this community, your presence would mean a great deal as we celebrate her journey and say farewell together.",
+      closingMessage: "Let us gather one final time to #makeitMemaurable, honor her journey, and wish her the very best in her next chapter."
+    },
+    id: {
+      openBtn: "Buka Undangan",
+      saveBtn: "Simpan sebagai PNG",
+      themeTitle: "Ganti tema terang/gelap",
+      langTitle: "Ganti ke Bahasa Inggris",
+      eyebrow: "Dear,",
+      dear: "Dear",
+      detailsTitle: "Detail Acara",
+      labelDateTime: "Tanggal & Waktu",
+      labelLink: "Tautan",
+      category: "Wisuda",
+      hostGreeting: "Dengan hangat kami mengundang Anda untuk menghadiri prosesi kelulusan dari",
+      hostGreetingAfter: "Sebagai bagian berharga dari komunitas ini, kehadiran Anda sangat berarti bagi kami.",
+      closingMessage: "Mari berkumpul untuk melepas dan menghormati perjalanan serta mendoakan yang terbaik di babak berikutnya! #makeitMemaurable"
+    }
+  };
+
+  const EN_DAYS   = { Sunday:'Minggu', Monday:'Senin', Tuesday:'Selasa', Wednesday:'Rabu', Thursday:'Kamis', Friday:'Jumat', Saturday:'Sabtu' };
+  const EN_MONTHS = { January:'Januari', February:'Februari', March:'Maret', April:'April', May:'Mei', June:'Juni', July:'Juli', August:'Agustus', September:'September', October:'Oktober', November:'November', December:'Desember' };
+
+  let lang = 'id';
+  try{ lang = localStorage.getItem('lang') || 'id'; }catch(e){}
+
+  function localizeDate(str){
+    if (!str || lang === 'en') return str;
+    let out = String(str);
+    Object.keys(EN_MONTHS).forEach(en => { out = out.replace(en, EN_MONTHS[en]); });
+    Object.keys(EN_DAYS).forEach(en => { out = out.replace(en, EN_DAYS[en]); });
+    return out;
+  }
+
+  function setText(id, value){
+    const el = document.getElementById(id);
+    if (el && value !== undefined && value !== null) el.textContent = value;
+  }
+
+  function applyLang(l){
+    const t = I18N[l] || I18N.en;
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach(el=>{
+      const key = el.getAttribute('data-i18n-title');
+      if (t[key] !== undefined) el.title = t[key];
+    });
+
+    // Konten dinamis dari config.js — EN diambil dari EVENT, ID dari kamus
+    const ev = (window.__INVITATION_CONFIG__ && window.__INVITATION_CONFIG__.EVENT) || {};
+    const isId = l === 'id';
+    setText('categoryLabel', isId ? (t.category || ev.category) : ev.category);
+    setText('hostGreeting', isId ? (t.hostGreeting || ev.hostGreeting) : ev.hostGreeting);
+    setText('hostGreetingAfter', isId ? (t.hostGreetingAfter || ev.hostGreetingAfter) : ev.hostGreetingAfter);
+    setText('closingMessage', isId ? (t.closingMessage || ev.closingMessage) : ev.closingMessage);
+    const dt = localizeDate(ev.date);
+    const tm = ev.time || '';
+    setText('eventDateTime', (dt + (tm ? ' • ' + tm : '')).trim());
+
+    const code = document.getElementById('langCode');
+    if (code) code.textContent = l.toUpperCase();
+    document.documentElement.setAttribute('lang', l);
+    try{ localStorage.setItem('lang', l); }catch(e){}
+  }
+
+  const langBtn = document.getElementById('langBtn');
+  if (langBtn){
+    langBtn.addEventListener('click', ()=>{
+      lang = lang === 'en' ? 'id' : 'en';
+      applyLang(lang);
+    });
+    langBtn.setAttribute('data-i18n-title', 'langTitle');
+  }
+  applyLang(lang);
 })();
 </script>
 <script type="module">

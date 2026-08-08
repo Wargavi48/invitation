@@ -87,6 +87,8 @@ body{
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
   transition: background-color 200ms ease, color 200ms ease;
+  user-select:none;
+  -webkit-user-select:none;
 }
 
 /* ---------- Phone frame ---------- */
@@ -435,6 +437,14 @@ body{
 .theme-btn .icon-moon{ display:block; }
 [data-theme="dark"] .theme-btn .icon-sun{ display:block; }
 [data-theme="dark"] .theme-btn .icon-moon{ display:none; }
+.lang-btn{
+  width:auto;
+  min-width:40px;
+  padding: 0 12px;
+  gap:5px;
+  font-size:12px;
+  font-weight:700;
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 480px){
