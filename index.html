@@ -6,7 +6,7 @@
 <title>Undangan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
 <meta name="color-scheme" content="light dark">
 <script>
 // Set tema sebelum CSS dipakai (hindari flash): pakai preferensi sistem atau pilihan tersimpan
@@ -50,35 +50,25 @@
       </button>
     </div>
 
-    <!-- SLIDE 2: DETAILS -->
-    <div class="slide">
-      <div class="card card--intro">
-        <div class="lead">Dear, <span class="accent" id="guestName2">Tamu Undangan</span></div>
-        <div class="lead" id="hostGreeting">It is a pleasure to invite you to</div>
-        <div class="event-title" id="eventName">Nama Acara</div>
-      </div>
-      <div class="card">
-        <div class="row">
-          <span class="row-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          </span>
-          <div>
-            <div class="row-label">Waktu</div>
-            <div class="row-value" id="eventTime">-</div>
+    <!-- SLIDE 2: SURAT UNDANGAN -->
+    <div class="slide slide--letter">
+      <div class="letter">
+        <div class="letter__kicker">Dear,</div>
+        <div class="letter__guest" id="guestName2">Tamu Undangan</div>
+        <p class="letter__lead" id="hostGreeting">It is a pleasure to invite you to</p>
+        <h2 class="letter__title" id="eventName">Nama Acara</h2>
+        <div class="letter__rule" aria-hidden="true"></div>
+        <div class="letter__meta">
+          <div class="letter__row">
+            <span class="letter__label">Waktu</span>
+            <span class="letter__value" id="eventTime">-</span>
+          </div>
+          <div class="letter__row">
+            <span class="letter__label">Lokasi</span>
+            <span class="letter__value"><a id="eventPlace" href="#" target="_blank" rel="noopener">-</a></span>
           </div>
         </div>
-        <div class="row">
-          <span class="row-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
-          </span>
-          <div>
-            <div class="row-label">Lokasi</div>
-            <div class="row-value"><a id="eventPlace" href="#" target="_blank" rel="noopener">-</a></div>
-          </div>
-        </div>
-      </div>
-      <div class="notice">
-        <p id="closingMessage">Terima kasih.</p>
+        <p class="letter__closing" id="closingMessage">Terima kasih.</p>
       </div>
     </div>
 
@@ -196,7 +186,7 @@
   let current = 0;
 
   function render(){
-    slidesEl.style.transform = `translateX(-${current * (100/total)}%)`;
+    slidesEl.style.transform = `translateY(-${current * (100/total)}%)`;
     dots.forEach((d,i)=> d.classList.toggle('active', i===current));
     prevBtn.disabled = current===0;
     nextBtn.disabled = current===total-1;
@@ -214,14 +204,14 @@
   nextBtn.addEventListener('click', ()=> goTo(current+1));
 
   // swipe support
-  let touchStartX = null;
+  let touchStart = null;
   const frame = document.getElementById('frame');
-  frame.addEventListener('touchstart', e=>{ touchStartX = e.touches[0].clientX; });
+  frame.addEventListener('touchstart', e=>{ touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY }; });
   frame.addEventListener('touchend', e=>{
-    if (touchStartX===null) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 40){ dx < 0 ? goTo(current+1) : goTo(current-1); }
-    touchStartX = null;
+    if (touchStart===null) return;
+    const dy = e.changedTouches[0].clientY - touchStart.y;
+    touchStart = null;
+    if (Math.abs(dy) > 40){ dy < 0 ? goTo(current+1) : goTo(current-1); }
   });
 
   render();
