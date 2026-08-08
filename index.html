@@ -46,12 +46,15 @@
       <button class="button button--primary" id="openBtn">
         <span>Buka Undangan</span>
         <span class="button__divider"></span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
 
     <!-- SLIDE 2: SURAT UNDANGAN -->
     <div class="slide slide--letter">
+      <div class="letter-brand">
+        <img class="letter-brand__img" id="letterBrandImg" alt="KodoknyaMaura" />
+      </div>
       <div class="letter">
         <div class="letter__kicker">Dear,</div>
         <div class="letter__guest" id="guestName2">Tamu Undangan</div>
@@ -75,16 +78,10 @@
   </div>
 
   <div class="nav">
-    <button id="prevBtn" aria-label="Sebelumnya">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
     <div class="dots" id="dots">
       <div class="dot active"></div>
       <div class="dot"></div>
     </div>
-    <button id="nextBtn" aria-label="Berikutnya">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
   </div>
 </div>
 
@@ -134,6 +131,18 @@
   }
   renderMark('hostMark', EVENT.hostLogoUrl, EVENT.hostTag, '', EVENT.hostLogoHeight);
   renderMark('brandMark', EVENT.brandLogoUrl, EVENT.brandTag, 'wordmark--brand', EVENT.brandLogoHeight);
+
+  // Logo brand di slide 2 (surat) — tampil terpusat di atas kartu surat
+  const letterBrandImg = document.getElementById('letterBrandImg');
+  if (letterBrandImg){
+    if (EVENT.brandLogoUrl){
+      letterBrandImg.src = EVENT.brandLogoUrl;
+      if (EVENT.brandLogoHeight) letterBrandImg.style.setProperty('--logo-height', EVENT.brandLogoHeight + 'px');
+      letterBrandImg.onerror = function(){ letterBrandImg.style.display = 'none'; };
+    } else {
+      letterBrandImg.style.display = 'none';
+    }
+  }
 
   document.getElementById('categoryLabel').textContent = EVENT.category || 'Undangan';
   document.getElementById('hostGreeting').textContent = EVENT.hostGreeting;
@@ -188,8 +197,8 @@
   function render(){
     slidesEl.style.transform = `translateY(-${current * (100/total)}%)`;
     dots.forEach((d,i)=> d.classList.toggle('active', i===current));
-    prevBtn.disabled = current===0;
-    nextBtn.disabled = current===total-1;
+    if (prevBtn) prevBtn.disabled = current===0;
+    if (nextBtn) nextBtn.disabled = current===total-1;
   }
   function goTo(i){
     current = Math.max(0, Math.min(total-1, i));
@@ -200,8 +209,9 @@
     markOpened();
     goTo(1);
   });
-  prevBtn.addEventListener('click', ()=> goTo(current-1));
-  nextBtn.addEventListener('click', ()=> goTo(current+1));
+  if (prevBtn) prevBtn.addEventListener('click', ()=> goTo(current-1));
+  if (nextBtn) nextBtn.addEventListener('click', ()=> goTo(current+1));
+  dots.forEach((d,i)=> d.addEventListener('click', ()=> goTo(i)));
 
   // swipe support
   let touchStart = null;
