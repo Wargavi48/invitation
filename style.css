@@ -92,7 +92,7 @@ body{
 .brand-mark--brand{ justify-content:flex-end; }
 .brand-mark__logo{
   height: var(--logo-height, 28px);
-  max-height:44px;
+  max-height:56px;
   width:auto;
   max-width:100%;
   object-fit:contain;
