@@ -347,19 +347,19 @@ body{
 
 /* ---------- Nav (dots + arrows) ---------- */
 .nav{
-  position:absolute; bottom:20px; left:50%; transform:translateX(-50%);
-  display:flex; align-items:center; gap:14px;
+  position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center; gap:10px;
   background: var(--surface);
   backdrop-filter: blur(14px) saturate(140%);
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   border:1px solid var(--border);
   box-shadow: var(--shadow-sm);
   border-radius: var(--radius-pill);
-  padding: 8px 14px;
+  padding: 6px 11px;
   z-index:6;
 }
 .nav button{
-  width:28px; height:28px; border-radius:50%;
+  width:24px; height:24px; border-radius:50%;
   border:none; background:transparent; color: var(--text);
   display:flex; align-items:center; justify-content:center;
   cursor:pointer;
@@ -367,9 +367,22 @@ body{
 }
 .nav button:hover:not(:disabled){ color: var(--brand); }
 .nav button:disabled{ opacity:0.25; cursor:default; }
-.dots{ display:flex; gap:8px; }
-.dot{ width:7px; height:7px; border-radius:50%; background:var(--surface); border:1.5px solid var(--gray-300); transition:all 0.25s ease; }
-.dot.active{ background: var(--brand); border-color: var(--brand); transform:scale(1.15); }
+.dots{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.dot{
+  width:6px; height:6px; border-radius:50%;
+  background: var(--surface);
+  border:1.5px solid var(--gray-300);
+  transition: all 0.25s ease;
+}
+.dot.active{
+  background: var(--brand);
+  border-color: var(--brand);
+  transform: scale(1.25);
+}
 
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{
