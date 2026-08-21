@@ -13,7 +13,9 @@ const SUPABASE_ANON_KEY = "__SUPABASE_ANON_KEY__"; // diisi otomatis oleh GitHub
 const GITHUB_USERNAME = "wargavi48"; // TODO: ganti dengan username GitHub kamu
 const INVITATION_URL = `https://${GITHUB_USERNAME}.github.io/invitation/`;
 
-// 2) ISI UNDANGAN — placeholder, silakan edit sesuai acara kamu
+// 2) ISI UNDANGAN — FALLBACK BAWAAN
+//    Dipakai kalau halaman dibuka TANPA ?inv=<slug>, atau file undangan tidak ditemukan.
+//    Undangan lain disimpan sebagai file JSON di folder invitations/ di repo ini.
 const EVENT = {
   hostTag: "Wargavi48",              // teks kecil kiri atas (dipakai kalau hostLogoUrl kosong)
   brandTag: "KodoknyaMaura",         // teks kecil kanan atas (dipakai kalau brandLogoUrl kosong)

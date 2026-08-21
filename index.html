@@ -104,12 +104,74 @@
 <script src="config.js"></script>
 <script>
 (function(){
-  const { SUPABASE_URL, SUPABASE_ANON_KEY, EVENT } = window.__INVITATION_CONFIG__;
+  const { SUPABASE_URL, SUPABASE_ANON_KEY } = window.__INVITATION_CONFIG__;
   const supabase = (SUPABASE_URL.startsWith("http"))
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
     : null;
 
+  // ---- Muat konfigurasi undangan ----
+  // Prioritas: ?inv=<slug> di URL → file invitations/<slug>.json di repo → fallback EVENT.
+  const params = new URLSearchParams(window.location.search);
+  const invSlug = params.get('inv');
+  let EVENT = window.__INVITATION_CONFIG__.EVENT;
+
+  async function loadInvitationConfig(){
+    if (invSlug){
+      try{
+        const res = await fetch('invitations/' + encodeURIComponent(invSlug) + '.json', { cache: 'no-store' });
+        if (res.ok){
+          const remote = await res.json();
+          if (remote && typeof remote === 'object'){
+            EVENT = Object.assign({}, EVENT, remote);
+          }
+        }
+      }catch(e){
+        console.warn('Gagal memuat undangan "' + invSlug + '", pakai fallback:', e);
+      }
+    }
+    // Ekspos hasil merge supaya skrip lain (i18n, tema) memakai konfigurasi yang sama
+    window.__ACTIVE_EVENT__ = EVENT;
+  }
+
   // ---- Fill static content from config ----
+  function applyTheme(){
+    const root = document.documentElement;
+    const t = EVENT.theme || {};
+    if (t.brand) root.style.setProperty('--brand', t.brand);
+    if (t.brandHover) root.style.setProperty('--brand-hover', t.brandHover);
+    if (t.brandSoft) root.style.setProperty('--brand-soft', t.brandSoft);
+    if (t.accent) root.style.setProperty('--accent', t.accent);
+    if (t.bg) root.style.setProperty('--bg', t.bg);
+    if (t.text) root.style.setProperty('--text', t.text);
+    if (t.textMuted) root.style.setProperty('--text-muted', t.textMuted);
+    if (t.surface) root.style.setProperty('--surface', t.surface);
+    if (t.surfaceMuted) root.style.setProperty('--surface-muted', t.surfaceMuted);
+    if (t.border) root.style.setProperty('--border', t.border);
+    if (t.controlBg) root.style.setProperty('--control-bg', t.controlBg);
+    if (t.controlText) root.style.setProperty('--control-text', t.controlText);
+    if (t.fontSans) root.style.setProperty('--font-sans', t.fontSans);
+    if (t.fontDisplay) root.style.setProperty('--font-display', t.fontDisplay);
+    if (t.fontSerif) root.style.setProperty('--font-serif', t.fontSerif);
+    if (t.fontHonoree) root.style.setProperty('--font-honoree', t.fontHonoree);
+    // Latar kartu: backgroundImage (URL) atau backgroundColor
+    if (t.backgroundImage) root.style.setProperty('--frame-bg', 'url("' + t.backgroundImage + '") center/cover no-repeat');
+    else if (t.backgroundColor) root.style.setProperty('--frame-bg', t.backgroundColor);
+  }
+
+  function loadFonts(fonts){
+    if (!fonts || !fonts.length) return;
+    const families = fonts.map(f=> f.replace(/ /g, '+')).join('&family=');
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=' + families + '&display=swap';
+    document.head.appendChild(link);
+    // Font pertama dipakai untuk nama yang dirayakan (honoree)
+    document.documentElement.style.setProperty('--font-honoree', '"' + fonts[0] + '"');
+  }
+
+  function applyEvent(){
+  applyTheme();
+  loadFonts(EVENT.fonts);
   document.getElementById('hostTag').textContent = EVENT.hostTag;
   document.getElementById('brandTag').textContent = EVENT.brandTag;
 
@@ -158,9 +220,9 @@
   placeEl.textContent = EVENT.place;
   placeEl.href = EVENT.placeMapUrl || '#';
   document.getElementById('closingMessage').textContent = EVENT.closingMessage;
+  }
 
   // ---- Guest lookup by slug (?to=slug) ----
-  const params = new URLSearchParams(window.location.search);
   const slug = params.get('to');
   let guestId = null;
 
@@ -182,7 +244,12 @@
     document.getElementById('guestName').textContent = name;
     document.getElementById('guestName2').textContent = name;
   }
-  loadGuest();
+
+  (async function init(){
+    await loadInvitationConfig();
+    applyEvent();
+    loadGuest();
+  })();
 
   async function markOpened(){
     if (guestId && supabase){
@@ -329,7 +396,7 @@
       detailsTitle: "Detail Acara",
       labelDateTime: "Tanggal & Waktu",
       labelLink: "Tautan",
-      category: "Graduation",
+      category: "Wisuda",
       hostGreeting: "Dengan hangat kami mengundang Anda untuk menghadiri prosesi kelulusan dari",
       hostGreetingAfter: "Sebagai bagian berharga dari komunitas ini, kehadiran Anda sangat berarti bagi kami.",
       closingMessage: "Mari berkumpul untuk melepas dan menghormati perjalanan serta mendoakan yang terbaik di babak berikutnya! #makeitMemaurable"
@@ -366,8 +433,8 @@
       if (t[key] !== undefined) el.title = t[key];
     });
 
-    // Konten dinamis dari config.js — EN diambil dari EVENT, ID dari kamus
-    const ev = (window.__INVITATION_CONFIG__ && window.__INVITATION_CONFIG__.EVENT) || {};
+    // Konten dinamis — EN diambil dari EVENT aktif (fallback atau dari Storage), ID dari kamus
+    const ev = window.__ACTIVE_EVENT__ || (window.__INVITATION_CONFIG__ && window.__INVITATION_CONFIG__.EVENT) || {};
     const isId = l === 'id';
     setText('categoryLabel', isId ? (t.category || ev.category) : ev.category);
     setText('hostGreeting', isId ? (t.hostGreeting || ev.hostGreeting) : ev.hostGreeting);

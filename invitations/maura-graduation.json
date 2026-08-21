@@ -1,0 +1,24 @@
+{
+  "hostTag": "Wargavi48",
+  "brandTag": "KodoknyaMaura",
+  "hostLogoUrl": "asset/Pictorial.png",
+  "hostLogoHeight": 36,
+  "brandLogoUrl": "asset/makeitMemaurable_log_logoo.png",
+  "brandLogoHeight": 172,
+  "category": "Graduation",
+  "eventName": "Graduation of Maura Nilambari",
+  "hostGreeting": "You are warmly invited to attend the online graduation ceremony of",
+  "honoreeName": "Maura Nilambari",
+  "hostGreetingAfter": "As a valued part of this community, your presence would mean a great deal as we celebrate her journey and say farewell together.",
+  "date": "Sunday, 9 August 2026",
+  "time": "19.19 WIB",
+  "place": "YouTube - Maura Nilambari - JKT48V",
+  "placeMapUrl": "https://www.youtube.com/live/2QxfnXY6OoA",
+  "closingMessage": "Let us gather one final time to #makeitMemaurable, honor her journey, and wish her the very best in her next chapter.",
+  "defaultGuestName": "Tamu Undangan",
+  "fonts": ["Story Script", "Cormorant Garamond"],
+  "theme": {
+    "brand": "#0c6f9e",
+    "accent": "#22c3dd"
+  }
+}
