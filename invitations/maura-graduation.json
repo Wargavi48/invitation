@@ -5,20 +5,22 @@
   "hostLogoHeight": 36,
   "brandLogoUrl": "asset/makeitMemaurable_log_logoo.png",
   "brandLogoHeight": 172,
-  "category": "Graduation",
-  "eventName": "Graduation of Maura Nilambari",
-  "hostGreeting": "You are warmly invited to attend the online graduation ceremony of",
   "honoreeName": "Maura Nilambari",
-  "hostGreetingAfter": "As a valued part of this community, your presence would mean a great deal as we celebrate her journey and say farewell together.",
-  "date": "Sunday, 9 August 2026",
   "time": "19.19 WIB",
-  "place": "YouTube - Maura Nilambari - JKT48V",
   "placeMapUrl": "https://www.youtube.com/live/2QxfnXY6OoA",
-  "closingMessage": "Let us gather one final time to #makeitMemaurable, honor her journey, and wish her the very best in her next chapter.",
-  "defaultGuestName": "Tamu Undangan",
   "fonts": ["Story Script", "Cormorant Garamond"],
   "theme": {
     "brand": "#0c6f9e",
     "accent": "#22c3dd"
+  },
+  "i18n": {
+    "category": { "en": "Graduation", "id": "Wisuda" },
+    "eventName": { "en": "Graduation of Maura Nilambari", "id": "Wisuda Maura Nilambari" },
+    "hostGreeting": { "en": "You are warmly invited to attend the online graduation ceremony of", "id": "Dengan hangat kami mengundang Anda untuk menghadiri upacara wisuda online dari" },
+    "hostGreetingAfter": { "en": "As a valued part of this community, your presence would mean a great deal as we celebrate her journey and say farewell together.", "id": "Sebagai bagian berharga dari komunitas ini, kehadiran Anda sangat berarti bagi kami saat merayakan perjalanannya." },
+    "closingMessage": { "en": "Let us gather one final time to #makeitMemaurable, honor her journey, and wish her the very best in her next chapter.", "id": "Mari berkumpul untuk terakhir kalinya demi #makeitMemaurable, menghormati perjalanannya, dan mendoakan yang terbaik untuknya." },
+    "date": { "en": "Sunday, 9 August 2026", "id": "Minggu, 9 Agustus 2026" },
+    "place": { "en": "YouTube - Maura Nilambari - JKT48V", "id": "YouTube - Maura Nilambari - JKT48V" },
+    "defaultGuestName": { "en": "Guest", "id": "Tamu Undangan" }
   }
 }

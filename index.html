@@ -208,18 +208,18 @@
     }
   }
 
-  document.getElementById('categoryLabel').textContent = EVENT.category || 'Undangan';
-  document.getElementById('hostGreeting').textContent = EVENT.hostGreeting;
+  document.getElementById('categoryLabel').textContent = EVENT.category || (EVENT.i18n && EVENT.i18n.category && EVENT.i18n.category.en) || 'Undangan';
+  document.getElementById('hostGreeting').textContent = EVENT.hostGreeting || (EVENT.i18n && EVENT.i18n.hostGreeting && EVENT.i18n.hostGreeting.en) || '';
   const honoreeEl = document.getElementById('honoree');
   if (honoreeEl) honoreeEl.textContent = EVENT.honoreeName || '';
   const hostGreetingAfterEl = document.getElementById('hostGreetingAfter');
-  if (hostGreetingAfterEl) hostGreetingAfterEl.textContent = EVENT.hostGreetingAfter || '';
+  if (hostGreetingAfterEl) hostGreetingAfterEl.textContent = EVENT.hostGreetingAfter || (EVENT.i18n && EVENT.i18n.hostGreetingAfter && EVENT.i18n.hostGreetingAfter.en) || '';
   const eventDateTimeEl = document.getElementById('eventDateTime');
-  if (eventDateTimeEl) eventDateTimeEl.textContent = (EVENT.date + " • " + EVENT.time).trim();
+  if (eventDateTimeEl) eventDateTimeEl.textContent = ((EVENT.date || (EVENT.i18n && EVENT.i18n.date && EVENT.i18n.date.en)) + " • " + EVENT.time).trim();
   const placeEl = document.getElementById('eventPlace');
-  placeEl.textContent = EVENT.place;
+  placeEl.textContent = EVENT.place || (EVENT.i18n && EVENT.i18n.place && EVENT.i18n.place.en) || '';
   placeEl.href = EVENT.placeMapUrl || '#';
-  document.getElementById('closingMessage').textContent = EVENT.closingMessage;
+  document.getElementById('closingMessage').textContent = EVENT.closingMessage || (EVENT.i18n && EVENT.i18n.closingMessage && EVENT.i18n.closingMessage.en) || '';
   }
 
   // ---- Guest lookup by slug (?to=slug) ----
@@ -227,7 +227,7 @@
   let guestId = null;
 
   async function loadGuest(){
-    let name = EVENT.defaultGuestName;
+    let name = EVENT.defaultGuestName || (EVENT.i18n && EVENT.i18n.defaultGuestName && EVENT.i18n.defaultGuestName.en) || 'Tamu Undangan';
     if (slug && supabase){
       try{
         const { data, error } = await supabase
@@ -248,6 +248,7 @@
   (async function init(){
     await loadInvitationConfig();
     applyEvent();
+    if (window.__applyLang) window.__applyLang();
     loadGuest();
   })();
 
@@ -423,6 +424,7 @@
   }
 
   function applyLang(l){
+    if (!l) l = lang;
     const t = I18N[l] || I18N.en;
     document.querySelectorAll('[data-i18n]').forEach(el=>{
       const key = el.getAttribute('data-i18n');
@@ -433,16 +435,23 @@
       if (t[key] !== undefined) el.title = t[key];
     });
 
-    // Konten dinamis — EN diambil dari EVENT aktif (fallback atau dari Storage), ID dari kamus
+    // Konten dinamis — EN/ID dari EVENT aktif (fallback atau JSON undangan)
     const ev = window.__ACTIVE_EVENT__ || (window.__INVITATION_CONFIG__ && window.__INVITATION_CONFIG__.EVENT) || {};
-    const isId = l === 'id';
-    setText('categoryLabel', isId ? (t.category || ev.category) : ev.category);
-    setText('hostGreeting', isId ? (t.hostGreeting || ev.hostGreeting) : ev.hostGreeting);
-    setText('hostGreetingAfter', isId ? (t.hostGreetingAfter || ev.hostGreetingAfter) : ev.hostGreetingAfter);
-    setText('closingMessage', isId ? (t.closingMessage || ev.closingMessage) : ev.closingMessage);
-    const dt = localizeDate(ev.date);
+    const invI18n = ev.i18n || {};
+    const pick = key => {
+      // prioritas: terjemahan per-undangan → kamus bawaan → nilai EVENT
+      if (invI18n[key] && invI18n[key][l]) return invI18n[key][l];
+      if (t[key] !== undefined) return t[key];
+      return ev[key];
+    };
+    setText('categoryLabel', pick('category'));
+    setText('hostGreeting', pick('hostGreeting'));
+    setText('hostGreetingAfter', pick('hostGreetingAfter'));
+    setText('closingMessage', pick('closingMessage'));
+    const dt = localizeDate(pick('date'));
     const tm = ev.time || '';
     setText('eventDateTime', (dt + (tm ? ' • ' + tm : '')).trim());
+    setText('eventPlace', pick('place'));
 
     const code = document.getElementById('langCode');
     if (code) code.textContent = l.toUpperCase();
@@ -458,6 +467,9 @@
     });
     langBtn.setAttribute('data-i18n-title', 'langTitle');
   }
+  // Dipanggil lagi setelah konfigurasi undangan dimuat (async), supaya
+  // terjemahan per-undangan (i18n di JSON) ikut diterapkan.
+  window.__applyLang = applyLang;
   applyLang(lang);
 })();
 </script>
