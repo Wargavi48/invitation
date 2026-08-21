@@ -109,10 +109,20 @@
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
     : null;
 
-  // ---- Muat konfigurasi undangan ----
-  // Prioritas: ?inv=<slug> di URL → file invitations/<slug>.json di repo → fallback EVENT.
+  // ---- Wajib ada ?inv=<slug> ----
+  // Tanpa ?inv= halaman tidak bisa diakses → redirect ke homepage (root GitHub Pages).
   const params = new URLSearchParams(window.location.search);
   const invSlug = params.get('inv');
+  if (!invSlug){
+    const home = (window.__INVITATION_CONFIG__ && window.__INVITATION_CONFIG__.INVITATION_URL)
+      ? new URL(window.__INVITATION_CONFIG__.INVITATION_URL).origin + '/'
+      : 'https://wargavi48.github.io/';
+    window.location.replace(home);
+    return; // hentikan eksekusi script
+  }
+
+  // ---- Muat konfigurasi undangan ----
+  // Prioritas: ?inv=<slug> di URL → file invitations/<slug>.json di repo → fallback EVENT.
   let EVENT = window.__INVITATION_CONFIG__.EVENT;
 
   async function loadInvitationConfig(){
