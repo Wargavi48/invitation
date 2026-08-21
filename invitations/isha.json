@@ -1,0 +1,26 @@
+{
+  "hostTag": "Wargavi48",
+  "brandTag": "KodoknyaMaura",
+  "hostLogoUrl": "asset/Pictorial.png",
+  "hostLogoHeight": 36,
+  "brandLogoUrl": "asset/makeitMemaurable_log_logoo.png",
+  "brandLogoHeight": 172,
+  "honoreeName": "Maura Nilambari",
+  "time": "19.19 WIB",
+  "placeMapUrl": "https://youtube.com/live/McnzvNSFqdw",
+  "fonts": ["Story Script", "Cormorant Garamond"],
+  "theme": {
+    "brand": "#0c6f9e",
+    "accent": "#22c3dd"
+  },
+  "i18n": {
+    "category": { "en": "Graduation", "id": "Graduation" },
+    "eventName": { "en": "Graduation of Isha Kirana", "id": "Acara Kelulusan Isha Kirana" },
+    "hostGreeting": { "en": "You are warmly invited to attend the online graduation ceremony of", "id": "Dengan hangat kami mengundang kakak untuk menghadiri upacara wisuda online dari" },
+    "hostGreetingAfter": { "en": "As a valued part of this community, your presence would mean a great deal as we celebrate her journey and say farewell together.", "id": "Sebagai bagian berharga dari komunitas ini, kehadiran kakak sangat berarti bagi kami saat merayakan perjalanannya." },
+    "closingMessage": { "en": "Let us gather one final time to memorable, honor her journey, and wish her the very best in her next chapter. #Hinds19ht", "id": "Mari berkumpul untuk terakhir kalinya demi menghormati perjalanannya, dan mendoakan yang terbaik untuknya. #Hinds19ht" },
+    "date": { "en": "Friday, 21 August 2026", "id": "Jumat, 21 Agustus 2026" },
+    "place": { "en": "YouTube - Isha Kirana - JKT48V", "id": "YouTube - Isha Kirana - JKT48V" },
+    "defaultGuestName": { "en": "Guest", "id": "Tamu Undangan" }
+  }
+}
