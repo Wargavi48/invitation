@@ -338,22 +338,53 @@
       img.style.height = Math.round(h) + 'px';
     });
 
+    // html2canvas gagal saat ada background-image data:URI SVG (mis. .cover-scrim::before)
+    // atau gambar latar berukuran sangat besar (mis. 3041x4257) → "createPattern width/height 0".
+    // Ditangani oleh downscaleBackgroundImages() di bawah + pemulihan di finally.
+
     try {
+      // Prapemrosesan: gambar latar yang sangat besar (mis. 3041x4257) bikin
+      // html2canvas gagal "createPattern width/height 0". Turunkan ukurannya
+      // jadi versi kecil sebagai data-URI, dipakai saat capture lalu dikembalikan.
+      const bgFix = await downscaleBackgroundImages();
       const canvas = await html2canvas(frameEl, {
         scale: 2,
         useCORS: true,
-        backgroundColor: null,
+        backgroundColor: '#ffffff',
         logging: false
       });
-      const a = document.createElement('a');
-      a.download = 'undangan.png';
-      a.href = canvas.toDataURL('image/png');
-      a.click();
+      bgFix.restore();
+      // Simpan PNG. Pakai toBlob + URL.createObjectURL() (bukan toDataURL) supaya
+      // kompatibel dengan iOS Safari yang memblokir unduhan data-URI base64 besar.
+      const blob = await new Promise(resolve=> canvas.toBlob(resolve, 'image/png'));
+      if (!blob){ throw new Error('Gagal membuat file gambar'); }
+      const url = URL.createObjectURL(blob);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (isIOS){
+        // iOS: buka blob di tab baru agar pengguna bisa "Save Image" dari menu saham.
+        const w = window.open(url, '_blank');
+        if (!w){ prompt('Simpan gambar ini (tahan / save image):', url); }
+      } else {
+        const a = document.createElement('a');
+        a.download = 'undangan.png';
+        a.href = url;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+      setTimeout(()=> URL.revokeObjectURL(url), 4000);
       if (window.cuelume) window.cuelume.play('success');
     } catch (err) {
       console.error(err);
       alert('Gagal menyimpan gambar: ' + err.message);
     } finally {
+      // pastikan background pulih walau error
+      document.querySelectorAll('[data-bg-orig]').forEach(el=>{
+        const orig = el.getAttribute('data-bg-orig');
+        if (orig) el.style.backgroundImage = orig;
+        el.removeAttribute('data-bg-orig');
+      });
       logos.forEach(img=>{
         img.style.width = '';
         img.style.height = '';
@@ -362,6 +393,65 @@
       saveBtn.disabled = false;
     }
   });
+
+  async function downscaleBackgroundImages(){
+    // Kembalikan bg pseudo-element dulu supaya tampil
+    const fixed = [];
+    for (const el of document.querySelectorAll('*')){
+      const bg = getComputedStyle(el).backgroundImage;
+      if (!bg || bg === 'none') continue;
+      const urls = [...bg.matchAll(/url\(\s*["']?(.*?)["']?\s*\)/g)].map(m=>m[1]);
+      if (!urls.length) continue;
+      let replaced = false;
+      const parts = [];
+      for (let i = 0; i < bg.length;){
+        const m = /url\(["']?([^"')]+)["']?\)/.exec(bg.slice(i));
+        if (!m){ parts.push(bg.slice(i)); break; }
+        parts.push(bg.slice(i, i + m.index));
+        const rawUrl = m[1];
+        // abaikan data:URI (termasuk svg) & yang sudah data-image
+        if (/^data:/.test(rawUrl)){ parts.push(m[0]); i += m.index + m[0].length; continue; }
+        // hanya tangani url http/https yang bisa dimuat
+        if (/^https?:\/\//.test(rawUrl)){
+          const down = await new Promise(resolve=>{
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.onload = ()=>{
+              if (img.naturalWidth > 1600 || img.naturalHeight > 1600){
+                const scale = Math.min(1, 1600/img.naturalWidth, 1600/img.naturalHeight);
+                const c = document.createElement('canvas');
+                c.width = Math.round(img.naturalWidth*scale);
+                c.height = Math.round(img.naturalHeight*scale);
+                c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                resolve('url("' + c.toDataURL('image/jpeg', 0.85) + '")');
+              } else {
+                resolve(m[0]);
+              }
+            };
+            img.onerror = ()=> resolve(m[0]);
+            img.src = rawUrl;
+          });
+          parts.push(down);
+          replaced = true;
+          i += m.index + m[0].length;
+        } else {
+          parts.push(m[0]); i += m.index + m[0].length;
+        }
+      }
+      if (replaced){
+        el.setAttribute('data-bg-orig', el.style.backgroundImage || getComputedStyle(el).backgroundImage);
+        el.style.backgroundImage = parts.join('');
+        fixed.push(el);
+      }
+    }
+    return { restore(){
+      fixed.forEach(el=>{
+        const orig = el.getAttribute('data-bg-orig');
+        if (orig) el.style.backgroundImage = orig;
+        el.removeAttribute('data-bg-orig');
+      });
+    }};
+  }
 })();
 </script>
 
