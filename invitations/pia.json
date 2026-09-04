@@ -1,0 +1,55 @@
+{
+  "slug": "pia",
+  "hostTag": "Wargavi48",
+  "brandTag": "Pia Meraleo",
+  "hostLogoUrl": "asset/Pictorial.png",
+  "hostLogoHeight": 36,
+  "brandLogoUrl": "asset/MissionComPialete.png",
+  "brandLogoHeight": 172,
+  "honoreeName": "Pia Meraleo",
+  "time": "19.15 WIB",
+  "placeMapUrl": "https://youtube.com/watch?v=AIiuHaE56xw",
+  "i18n": {
+    "category": {
+      "en": "Graduation",
+      "id": "Graduation"
+    },
+    "eventName": {
+      "en": "Graduation of Pia Meraleo",
+      "id": "Acara Kelulusan Pia Meraleo"
+    },
+    "hostGreeting": {
+      "en": "You are warmly invited to attend the graduation stream of",
+      "id": "Dengan hangat kami mengundang teman-teman untuk menghadiri graduation stream dari"
+    },
+    "hostGreetingAfter": {
+      "en": "As a valued part of this community, your presence would mean a great deal as we celebrate her journey and say farewell together.",
+      "id": "Sebagai bagian berharga dari komunitas ini, kehadiran teman-teman sangat berarti bagi kami saat merayakan perjalanannya."
+    },
+    "closingMessage": {
+      "en": "Let us gather one final time to memorable, honor her journey, and wish her the very best in her next chapter. #MissionComPialete",
+      "id": "Mari berkumpul untuk melepas dan menghomati perjalanannya serta mendoakan yang terbaik untuk Pia di babak berikutnya! #MissionComPialete"
+    },
+    "date": {
+      "en": "Saturday, 5 September 2026",
+      "id": "Sabtu, 5 September 2026"
+    },
+    "place": {
+      "en": "YouTube - Pia Meraleo - JKT48V",
+      "id": "YouTube - Pia Meraleo - JKT48V"
+    },
+    "defaultGuestName": {
+      "en": "Guest",
+      "id": "Tamu Undangan"
+    }
+  },
+  "fonts": [
+    "Story Script",
+    "Cormorant Garamond"
+  ],
+  "theme": {
+    "brand": "#473a45",
+    "accent": "#9c1c15",
+    "backgroundImage": "asset/pia.jpg"
+  }
+}
